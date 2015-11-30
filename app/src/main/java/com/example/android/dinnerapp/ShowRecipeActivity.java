@@ -20,6 +20,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 
 public class ShowRecipeActivity extends Activity {
 
@@ -34,6 +37,13 @@ public class ShowRecipeActivity extends Activity {
 
     protected void onStart() {
         super.onStart();
+
+        // Get the tracker
+        Tracker tracker = ((MyApplication) getApplication()).getTracker();
+        // Set the screen name
+        tracker.setScreenName("Screen show recipe");
+        // Send a screen hit
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         // Set the heading
         TextView heading_tv = (TextView) findViewById(R.id.textView_info_heading);
