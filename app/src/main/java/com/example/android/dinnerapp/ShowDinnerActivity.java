@@ -25,6 +25,9 @@ import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 /**
  * Created by jocelyn on 3/12/15.
  */
@@ -64,6 +67,17 @@ public class ShowDinnerActivity extends Activity {
     }
 
     public void removeMeal (View view) {
+
+        // Get the tracker from the Application class
+        Tracker tracker = ((MyApplication) getApplication()).getTracker();
+
+        // Send the event hit after adding the category, action and label
+        tracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Dinner actions")
+                .setAction("Dislike dinner choice")
+                .setLabel(mDinner)
+                .build());
+
         // Start an intent to remove the dinner suggestion
         Intent intent = new Intent(this, RemoveMealActivity.class);
         intent.putExtra(selectedDinnerExtrasKey, mDinner);
