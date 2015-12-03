@@ -1,10 +1,12 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/white"
     android:clickable="false"
     android:id="@+id/scrollview_info"
-    android:fillViewport="false">
+    android:fillViewport="false"
+    tools:showIn="@layout/show_dinner_suggestion">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"

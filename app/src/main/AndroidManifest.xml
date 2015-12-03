@@ -58,6 +58,15 @@
                 android:value=".ShowDinnerActivity" />
         </activity>
 
+        <activity
+            android:name=".ShowAllDinnersActivity"
+            android:label=""
+            android:parentActivityName=".ShowAllDinnersActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+
     </application>
 
 </manifest>

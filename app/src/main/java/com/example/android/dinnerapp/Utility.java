@@ -19,6 +19,9 @@ package com.example.android.dinnerapp;
 import android.content.Context;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by jocelyn on 12/10/14.
  */
@@ -46,5 +49,19 @@ public class Utility {
 
     public static String[] combine(String[] a, String[] b, String[] c, String[] d){
         return combine(combine(a, b), combine(c, d));
+    }
+
+    public static String getDinnerId(String dinner) {
+        return dinner.substring(0, 2);
+    }
+
+    public static String getCurrentTime() {
+        Date curDate = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("dd-M hh:mm:ss");
+        return format.format(curDate);
+    }
+
+    public static String getUniqueTransactionId (String productId) {
+        return ("T-" + getCurrentTime() + productId);
     }
 }
