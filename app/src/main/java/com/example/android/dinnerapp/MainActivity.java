@@ -83,5 +83,10 @@ public class MainActivity extends Activity
 
         return dinnerChoice;
     }
+
+    public void showDinnerList (View view) {
+            // Start the activity that shows all the dinners
+            startActivity(new Intent(this, ShowAllDinnersActivity.class));
+    }
 }
 
