@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 /**
  * Created by jonathan.cook on 12/1/2015.
  */
@@ -17,6 +20,9 @@ public class ShowAllDinnersActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_all_dinners);
+
+        // Start timing how long it takes to display the list of products
+        long startTime = System.nanoTime();
 
         // Get the array of all the dinners
         Dinner dinner = new Dinner();
@@ -33,6 +39,13 @@ public class ShowAllDinnersActivity extends ListActivity {
         // Attach the ArrayAdapter to the list view
         ListView listView = (ListView) findViewById(android.R.id.list);
         listView.setAdapter(adapter);
+
+        // Stop timing how long it takes to display a list of products
+        long stopTime = System.nanoTime();
+
+        long elapsedTime = (stopTime - startTime) / 1000000;
+
+        sendAnalyticsTimingHit(elapsedTime);
     }
 
     @Override
@@ -49,6 +62,18 @@ public class ShowAllDinnersActivity extends ListActivity {
         intent.putExtra(selectedDinnerExtrasKey, value);
 
         startActivity(intent);
+    }
+
+    private void sendAnalyticsTimingHit(long elapsedTime) {
+
+        Tracker tracker = ((MyApplication) getApplication()).getTracker();
+
+        tracker.send(new HitBuilders.TimingBuilder()
+                .setCategory("List all the dinners")
+                .setValue(elapsedTime)
+                .setLabel("display list")
+                .setVariable("duration")
+                .build());
     }
 
 

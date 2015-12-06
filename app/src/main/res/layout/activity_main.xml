@@ -28,6 +28,13 @@
         android:onClick="showDinnerList"
         />
 
+    <Button style="@style/button_solid"
+        android:layout_marginTop="30dp"
+        android:text="Daily Special"
+        android:id="@+id/daily_special_button"
+        android:onClick="showDailySpecial"
+        />
+
 
 
 

@@ -67,6 +67,15 @@
                 android:value=".MainActivity" />
         </activity>
 
+        <activity
+            android:name=".ShowDailySpecialActivity"
+            android:label=""
+            android:parentActivityName=".ShowDailySpecialActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+
     </application>
 
 </manifest>

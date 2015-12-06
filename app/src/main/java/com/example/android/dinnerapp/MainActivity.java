@@ -24,14 +24,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
 
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.tagmanager.ContainerHolder;
+import com.google.android.gms.tagmanager.TagManager;
+
+import java.util.concurrent.TimeUnit;
+
 
 public class MainActivity extends Activity
         {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        loadGTMContainer();
         
         // TODO
         // Make sure that Analytics tracking has started
@@ -87,6 +97,32 @@ public class MainActivity extends Activity
     public void showDinnerList (View view) {
             // Start the activity that shows all the dinners
             startActivity(new Intent(this, ShowAllDinnersActivity.class));
+    }
+
+    public void showDailySpecial (View view) {
+        // Start the activity that shows all the dinners
+        startActivity(new Intent(this, ShowDailySpecialActivity.class));
+    }
+
+    private void loadGTMContainer() {
+
+        TagManager tagManager = ((MyApplication) getApplication()).getTagManager();
+
+        PendingResult pendingResult = tagManager.loadContainerPreferFresh("GTM-TSDF6Q", R.raw.gtm_default);
+
+        pendingResult.setResultCallback(new ResultCallback<ContainerHolder>() {
+            @Override
+            public void onResult(ContainerHolder containerHolder) {
+
+                if (!containerHolder.getStatus().isSuccess()) {
+                    // Deal with a failure
+                    return;
+                }
+                containerHolder.refresh();
+                ((MyApplication) getApplication()).setContainerHolder(containerHolder);
+            }
+        }, 2, TimeUnit.SECONDS);
+
     }
 }
 
