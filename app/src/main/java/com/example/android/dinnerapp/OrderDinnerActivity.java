@@ -34,6 +34,7 @@ public class OrderDinnerActivity extends Activity {
     Button btnAddToCart;
     Button btnStartCheckout;
     Button btnPurchase;
+    Button btnPayment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,7 @@ public class OrderDinnerActivity extends Activity {
         btnAddToCart = (Button) findViewById(R.id.add_to_cart_btn);
         btnStartCheckout = (Button) findViewById(R.id.start_checkout);
         btnPurchase = (Button) findViewById(R.id.btnPurchase);
+        btnPayment = (Button) findViewById(R.id.btnPayment);
 
         thisDinner = getIntent().getStringExtra(selectedDinnerExtrasKey);
         tv.setText("This is where you will order the selected dinner: \n\n" +
@@ -166,6 +168,9 @@ public class OrderDinnerActivity extends Activity {
 
         // Also send an Analytics hit
         sendPurchaseHit();
+
+        btnPurchase.setVisibility(View.INVISIBLE);
+        btnPayment.setVisibility(View.VISIBLE);
     }
 
     private  void sendPurchaseHit() {
@@ -184,6 +189,39 @@ public class OrderDinnerActivity extends Activity {
         tracker.send(new HitBuilders.EventBuilder()
                 .setCategory("Shopping steps")
                 .setAction("Purchase")
+                .setLabel(thisDinner)
+                .addProduct(product)
+                .setProductAction(productAction)
+                .build());
+
+    }
+
+    public void getPaymentInfo(View view) {
+
+        // Code goes here to add the dinner to the cart
+
+        Utility.showMyToast("Got a payment for " + thisDinner, this);
+
+        // Also send an Analytics hit
+        sendPaymentStep2Hit();
+    }
+
+    private  void sendPaymentStep2Hit() {
+
+        Product product = new Product()
+                .setName("dinner")
+                .setPrice(5)
+                .setVariant(thisDinner)
+                .setId(Utility.getDinnerId(thisDinner))
+                .setQuantity(1);
+
+        ProductAction productAction = new ProductAction(ProductAction.ACTION_CHECKOUT_OPTION).setCheckoutStep(2);
+
+        Tracker tracker = ((MyApplication) getApplication()).getTracker();
+
+        tracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Shopping steps")
+                .setAction("Payment")
                 .setLabel(thisDinner)
                 .addProduct(product)
                 .setProductAction(productAction)
