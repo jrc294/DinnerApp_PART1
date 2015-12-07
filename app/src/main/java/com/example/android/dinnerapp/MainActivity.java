@@ -27,6 +27,7 @@ import android.widget.PopupMenu;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.tagmanager.ContainerHolder;
+import com.google.android.gms.tagmanager.DataLayer;
 import com.google.android.gms.tagmanager.TagManager;
 
 import java.util.concurrent.TimeUnit;
@@ -99,7 +100,7 @@ public class MainActivity extends Activity
             startActivity(new Intent(this, ShowAllDinnersActivity.class));
     }
 
-    public void showDailySpecial (View view) {
+    public void showDailySpecial() {
         // Start the activity that shows all the dinners
         startActivity(new Intent(this, ShowDailySpecialActivity.class));
     }
@@ -123,6 +124,35 @@ public class MainActivity extends Activity
             }
         }, 2, TimeUnit.SECONDS);
 
+    }
+
+    public void putFoodPrefInDataLayer(MenuItem item) {
+
+        TagManager tagManager = TagManager.getInstance(this);
+
+        DataLayer dataLayer = tagManager.getDataLayer();
+
+        dataLayer.push("food-pref", item.toString());
+    }
+
+    public void showDailySpecial(View view) {
+        // Utility.showMyToast("I will show you a menu", this);
+        android.widget.PopupMenu popup = new android.widget.PopupMenu(this, view);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.food_prefs_menu, popup.getMenu());
+
+        // Set the action of the menu
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                putFoodPrefInDataLayer(item);
+                showDailySpecial();
+                return true;
+            }
+        });
+        // Show the popup menu
+        popup.show();
     }
 }
 
